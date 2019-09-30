@@ -1,0 +1,27 @@
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/yxgames/${context.bizEnName}/${context.bizEnName}_add.js"]}){
+
+
+<form id="${context.entityName}Form" lay-filter="${context.entityName}Form" class="layui-form model-form">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">id<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="id" placeholder="id" type="text" class="layui-input" lay-verify="required" required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">rewards<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="rewards" placeholder="rewards" type="text" class="layui-input" lay-verify="required" required/>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item text-right">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>
+    </div>
+
+</form>
+@}

@@ -1,0 +1,128 @@
+package ${controller.packageName};
+
+<% for(import in controller.imports!){ %>
+import ${import};
+<% } %>
+
+
+
+
+
+**
+ * ${context.bizChName}控制器
+ *
+ * @author zly
+ * @Date ${tool.currentTime()}
+ */
+
+@Controller
+@RequestMapping("/${context.bizEnName}")
+public class ${context.bizEnBigName}Controller extends BaseController {
+    
+    private String PREFIX = "/${context.moduleName}/${context.bizEnName}/";
+
+     @Autowired
+    private I${context.entityName}Service ${context.bizEnName}Service;
+
+    /**
+     * 跳转到${context.bizChName}首页
+     */
+    @RequestMapping("")
+    public String index() {
+       return PREFIX + "${context.bizEnName}.html";
+    }
+
+    /**
+     * 跳转到添加${context.bizChName}
+     */
+    @RequestMapping("/${context.bizEnName}_add")
+    public String ${context.bizEnName}Add() {
+        return PREFIX + "${context.bizEnName}_add.html";
+    }
+
+    /**
+     * 跳转到修改${context.bizChName}
+     */
+
+    @RequestMapping("/${context.bizEnName}_update")
+    public String ${context.bizEnName}Update(@RequestParam("id") Integer id) {
+
+        if (ToolUtil.isEmpty(id)) {
+            throw new RequestEmptyException();
+        }
+        ${context.entityName} byId = ${context.bizEnName}Service.getById(id);
+        LogObjectHolder.me().set(byId);
+	return PREFIX + "${context.bizEnName}_edit.html";
+    }
+
+    /**
+     * 查询
+     * 获取${context.bizChName}列表
+     * @param condition 查询参数
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/list")
+    public Object list(String condition) {
+        Page<Map<String, Object>> list = this.${context.bizEnName}Service.list(condition);
+	Page<Map<String, Object>> wrap = new ${context.entityName}Wrapper(list).wrap();
+        return LayuiPageFactory.createPageInfo(wrap);
+    }
+
+    /**
+     * 新增${context.bizChName}
+     */
+    @RequestMapping(value = "/add")
+    @Permission
+    @ResponseBody
+    public ResponseData add(${context.entityName} ${context.bizEnName}) {
+        this.${context.bizEnName}Service.add${context.entityName}(${context.bizEnName});
+        return SUCCESS_TIP;
+    }
+
+
+    /**
+     * 通过id查询
+     *
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @Permission
+    @RequestMapping("/detail/{id}")
+    public Object ${context.entityName}Detail(@PathVariable("id") Integer id) {
+        ${context.entityName} byId = ${context.bizEnName}Service.getById(id);
+        ${context.entityName}Dto ${context.bizEnName}Dto = new ${context.entityName}Dto();
+        ToolUtil.copyProperties(byId, ${context.bizEnName}Dto);
+        return ${context.bizEnName}Dto;
+    }
+
+    /**
+     * 修改
+     *
+     * @param ${context.bizEnName}
+     * @return
+     */
+    @Permission
+    @RequestMapping("/update")
+    @ResponseBody
+    public Object ${context.bizEnName}Update(${context.entityName} ${context.bizEnName}) {
+
+        ${context.bizEnName}Service.edit${context.entityName}(${context.bizEnName});
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 删除
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("/del")
+    @ResponseBody
+    @Permission
+    public Object del(@RequestParam Integer id) {
+        ${context.bizEnName}Service.del(id);
+        return SUCCESS_TIP;
+    }
+}
